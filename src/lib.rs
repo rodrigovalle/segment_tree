@@ -1,3 +1,11 @@
+//! segment_tree_rs
+//!
+//! Use the segment tree datastructure provided by this library to query the
+//! list of segments a point belongs to in O(log n) time. Construction by
+//! calling ::new() takes O(n log n) space and time.
+//
+// reference: https://en.wikipedia.org/wiki/Segment_tree#Construction
+
 use std::fmt;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -55,6 +63,7 @@ impl Default for Node {
 
 #[derive(Debug)]
 struct SegmentTree {
+    // The segment tree is stored as an implicit heap
     tree: Vec<Node>,
 }
 
