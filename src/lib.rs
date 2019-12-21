@@ -67,19 +67,11 @@ impl fmt::Display for SegmentTree {
             let end = start + nodes_this_level;
             for node_i in start..end {
                 if let Some(node) = self.tree.get(node_i) {
-                    if node.segments.contains(&Interval { start: 0, end: 10 }) {
-                        write!(
-                            f,
-                            "**({},{})**",
-                            node.interval.start, node.interval.end
-                        );
-                    } else {
-                        write!(
-                            f,
-                            "({},{})",
-                            node.interval.start, node.interval.end
-                        );
-                    }
+                    write!(
+                        f,
+                        "({},{})",
+                        node.interval.start, node.interval.end
+                    );
                 } else {
                     return Ok(());
                 }
@@ -234,33 +226,24 @@ impl SegmentTree {
     }
 
     fn insert(segment: Interval, tree: &mut Vec<Node>, root: usize) {
-        println!("inserting: {:?}", segment);
         if let Some(node) = tree.get_mut(root) {
-            println!("A: {:?}", node);
             if segment.contains(&node.interval) {
-                println!("B");
                 node.segments.push(segment);
             } else {
-                println!("C");
                 let left_child_i = 2 * root + 1;
                 if let Some(left_child) = tree.get(left_child_i) {
-                    println!("D: {:?}", left_child);
                     if segment.intersects(&left_child.interval) {
-                        println!("E");
                         Self::insert(segment, tree, left_child_i);
                     }
                 }
                 let right_child_i = 2 * root + 2;
                 if let Some(right_child) = tree.get(right_child_i) {
-                    println!("F: {:?}", right_child);
                     if segment.intersects(&right_child.interval) {
-                        println!("G");
                         Self::insert(segment, tree, right_child_i);
                     }
                 }
             }
         }
-        println!("H");
     }
 
     pub fn query(&self, p: i32) -> Vec<Interval> {
